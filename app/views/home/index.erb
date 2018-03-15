@@ -1,0 +1,102 @@
+<script type="text/javascript">
+        $base_id = 0;
+        $num_touchDown =0;
+        $.touch.triggerMouseEvents = true;
+        $.touch.orientationChanged(function () {
+            var width = $(window).width(),
+                height = $(window).height()-200;
+            $('#canvas').attr({
+                width: width,
+                height: height,
+            });
+            var c = document.getElementById('canvas');
+            var ctx = c.getContext('2d');
+            ctx.translate(0.5, 0.5);
+            ctx.lineWidth = 1;
+
+            ctx.strokeStyle = 'white';
+
+            ctx.beginPath();
+            for (var y = 100; y < height; y += 100) {
+                addLineSubPath(ctx, y, width);
+            }
+            for (var x = 100; x < width; x += 100) {
+                addLinePath(ctx, x, height);
+            }
+            ctx.stroke();
+        });
+        function addLineSubPath(ctx, y, width) {
+            ctx.moveTo(0, y);
+            ctx.lineTo(width, y);
+        }
+        function addLinePath(ctx, x, height) {
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, height);
+        }
+        $.touch.ready(function () {
+            var colors = {};
+            var touch_data = [];
+            function handleTouch(e, touchHistory) {
+                var ctx = this.getContext('2d');
+                ctx.beginPath();
+                ctx.arc(e.clientX, e.clientY, 10, 0, Math.PI * 2, true);
+                ctx.fill();
+            }
+            function getColor(c_id) {
+                var color_id = getRelativeID(c_id);
+                var colors = ['green', 'blue','red', 'purple','black'];
+                return colors[color_id];
+            }
+            function getRelativeID(identifier){
+                if(identifier<0 || identifier>5){
+                    var rel_id = $base_id;
+                    $base_id +=1;
+                    return rel_id;
+                }else{
+                    return identifier;
+                }
+            }
+            function handleTouch2(e, touchHistory) {
+                var stroke_id = e.touch.id; 
+                touch_data.push({id:e.touch.id,x:touchHistory.get(0).clientX,y:touchHistory.get(0).clientY,time:touchHistory.get(0).time});
+                if (!$.touch.allTouches[e.touch.id].color) $.touch.allTouches[e.touch.id].color = getColor(e.touch.id);
+                var ctx = this.getContext('2d');
+                ctx.beginPath();
+                ctx.moveTo(touchHistory.get(0).clientX, touchHistory.get(0).clientY);
+                ctx.lineTo(e.clientX, e.clientY);
+                ctx.lineCap = "round";
+                ctx.lineWidth = 10;
+                ctx.strokeStyle = $.touch.allTouches[e.touch.id].color;
+                ctx.stroke();
+                // $('#path').append(e.touch.id+ ": " +touchHistory.get(0).clientX+ '    ' + touchHistory.get(0).clientY+'::'+touchHistory.get(0).time+"<br />");
+            }
+            $('#canvas').touchable({
+                touchDown: function () {
+                    $num_touchDown +=1;
+                    if($num_touchDown > 5){
+                        alert("Max number of touch down reached");
+                        return false;
+                    }
+                    return true;
+                },
+                touchMove: handleTouch2
+            });
+            $('.data_json').bind("click touchstart", function(){
+                $.ajax({
+                    type: "POST",
+                    url: "/data_post",
+                    data: {finger_data:touch_data},
+                    success: function(data){alert("Data successfully uploaded.");},
+                    failure: function(errMsg) {
+                        alert(errMsg);
+                    }
+              });
+            });
+        });
+    </script>
+
+<body style="margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden">
+    <canvas id="canvas" style="background: silver"></canvas>
+    <div id='path' style="overflow-y: visible;"></div>
+    <input type="button" class="data_json" value="Save Data"></input>
+</body>
