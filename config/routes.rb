@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   root to: "home#index"
 
 	post '/data_post', to: 'home#save_data'
+	get '/csv', to: 'home#all_csv'
 end

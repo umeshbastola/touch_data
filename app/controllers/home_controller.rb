@@ -6,7 +6,7 @@ class HomeController < ApplicationController
 	def save_data
 		require 'csv'
 		base_compare = Hash.new
-		CSV.open("csv/finger_data"+Time.now.to_s+".csv", "w") do |csv|
+		CSV.open("public/csv/finger_data"+Time.now.to_i.to_s+".csv", "w") do |csv|
 			csv << ["stroke_id", "x", "y", "time"]
 			params[:finger_data].each do |key, value|
 				if !base_compare[value[:id]]
@@ -18,5 +18,9 @@ class HomeController < ApplicationController
 				csv << [value[:id], diff_x,diff_y,diff_time]
 			end
 		end
+	end
+
+	def all_csv
+		@csv_list =  Dir.entries("public/csv/")
 	end
 end

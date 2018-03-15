@@ -1,0 +1,5 @@
+<% @csv_list.each do |file| %>
+        <p>
+            <%= link_to "csv/#{file}", "csv/#{file}", download: '' %>
+        </p>
+    <% end %>
