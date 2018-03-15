@@ -5883,3 +5883,27 @@ No template found for HomeController#save_data, rendering head :no_content
 Completed 204 No Content in 97ms
 
 
+Started GET "/" for 127.0.0.1 at 2018-03-15 12:18:11 +0100
+Processing by HomeController#index as HTML
+  Rendering home/index.erb within layouts/application
+  Rendered home/index.erb within layouts/application (2.3ms)
+Completed 200 OK in 1727ms (Views: 1187.9ms)
+
+
+  [1m[35m (38.8ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (44.3ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_try_advisory_lock(6746962243976706465)[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (12.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2018-03-15 11:45:22.906535"], ["updated_at", "2018-03-15 11:45:22.906535"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(6746962243976706465)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/" for 127.0.0.1 at 2018-03-15 12:48:06 +0100
+Processing by HomeController#index as HTML
+  Rendering home/index.erb within layouts/application
+  Rendered home/index.erb within layouts/application (2.3ms)
+Completed 200 OK in 503ms (Views: 298.5ms)
+
+
