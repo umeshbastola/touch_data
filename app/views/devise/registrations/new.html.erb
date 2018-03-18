@@ -1,0 +1,67 @@
+
+
+<div class="container">
+  <div class="login-div">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3" style="z-index: 20;">
+          <div class="row">
+            <div class="box pad login-box">
+
+              <div class="col-md-12 no-margin-left" style="padding:0px; ">
+                <div class="ajax-alert alert" style="display:none;" role="alert">
+                </div>
+              </div>
+
+
+              <% if devise_error_messages!.length > 0 %>
+              <div class="row">
+                <div class="alert alert-danger">
+                  <p><%= devise_error_messages! %></p>
+                </div>
+
+              </div>
+              <% end %>
+              <%= form_for(resource, as: resource_name, :html => {:class => "form-horizontal",:role=>"form"}, url: registration_path(resource_name)) do |f| %>
+              <div class="form-group cred-div">
+                <label class="col-sm-3 control-label" for="user_session_email">Email</label>
+                <div class="col-sm-9">
+                  <%= f.email_field :email, required: "true", class: "form-control", placeholder: "Email Address", id: "user_session_email" %>
+                </div>
+              </div>
+              <div class="form-group cred-div">
+                <label class="col-sm-3 control-label" for="user_session_password">Password</label>
+                <div class="col-sm-9">
+                  <%= f.password_field :password, required:"true", class: "form-control", placeholder: "Password", id: "user_session_password", autocomplete: "off" %>
+                </div>
+              </div>
+
+              <div class="form-group cred-div">
+                <label class="col-sm-3 control-label" for="user_session_password">Confirm</label>
+                <div class="col-sm-9">
+                  <%= f.password_field :password_confirmation, required:"true", class: "form-control", placeholder: "Confirm Password", autocomplete: "off" %>
+                </div>
+              </div>
+              <div class="form-group cred-div">
+                <label class="col-sm-3"></label>
+                <div class="col-sm-9">
+                  <%= render "devise/shared/links" %>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                  <button class="btn btn-primary" id="login-btn" type="submit">Sign Up</button>
+                </div>
+              </div>
+              <% end %>
+            </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+  </div>

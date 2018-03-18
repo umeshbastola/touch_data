@@ -4,7 +4,7 @@
         $.touch.triggerMouseEvents = true;
         $.touch.orientationChanged(function () {
             var width = $(window).width(),
-                height = $(window).height()-200;
+                height = $(window).height();
             $('#canvas').attr({
                 width: width,
                 height: height,
@@ -36,6 +36,7 @@
         $.touch.ready(function () {
             var colors = {};
             var touch_data = [];
+            var time_start = 0;
             function handleTouch(e, touchHistory) {
                 var ctx = this.getContext('2d');
                 ctx.beginPath();
@@ -57,8 +58,11 @@
                 }
             }
             function handleTouch2(e, touchHistory) {
-                var stroke_id = e.touch.id; 
-                touch_data.push({id:e.touch.id,x:touchHistory.get(0).clientX,y:touchHistory.get(0).clientY,time:touchHistory.get(0).time});
+                if(time_start == 0){
+                    time_start = touchHistory.get(0).time;
+                }
+                var time_diff = touchHistory.get(0).time - time_start;
+                touch_data.push({id:e.touch.id,x:touchHistory.get(0).clientX,y:touchHistory.get(0).clientY,time:time_diff});
                 if (!$.touch.allTouches[e.touch.id].color) $.touch.allTouches[e.touch.id].color = getColor(e.touch.id);
                 var ctx = this.getContext('2d');
                 ctx.beginPath();
