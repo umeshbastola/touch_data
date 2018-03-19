@@ -14,10 +14,10 @@
               </div>
 
 
-              <% if devise_error_messages!.length > 0 %>
+              <% if devise_error_messages! %>
               <div class="row">
-                <div class="alert alert-danger">
-                  <p><%= devise_error_messages! %></p>
+                <div class="col-sm-12 col-md-12 alert alert-danger">
+                  <p>Please enter correct email address and password. If you have not signed up yet, please Sign Up!</p>
                 </div>
 
               </div>

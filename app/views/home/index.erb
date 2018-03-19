@@ -43,20 +43,12 @@
                 ctx.arc(e.clientX, e.clientY, 10, 0, Math.PI * 2, true);
                 ctx.fill();
             }
+            
             function getColor(c_id) {
-                var color_id = getRelativeID(c_id);
                 var colors = ['green', 'blue','red', 'purple','black'];
-                return colors[color_id];
+                return colors[c_id];
             }
-            function getRelativeID(identifier){
-                if(identifier<0 || identifier>5){
-                    var rel_id = $base_id;
-                    $base_id +=1;
-                    return rel_id;
-                }else{
-                    return identifier;
-                }
-            }
+            
             function handleTouch2(e, touchHistory) {
                 if(time_start == 0){
                     time_start = touchHistory.get(0).time;
