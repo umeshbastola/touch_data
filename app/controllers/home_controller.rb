@@ -60,8 +60,10 @@ class HomeController < ApplicationController
 				:stroke_seq => sequence,
 				:points => single_stroke[stroke]
 			}
-			trace_detail = Trajectory.new(data_source_hash)
-			trace_detail.save
+			puts data_source_hash
+			puts "--------------------------"
+			# trace_detail = Trajectory.new(data_source_hash)
+			# trace_detail.save
 		end	
 	end
 end

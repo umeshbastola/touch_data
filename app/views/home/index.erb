@@ -43,7 +43,7 @@
                 ctx.arc(e.clientX, e.clientY, 10, 0, Math.PI * 2, true);
                 ctx.fill();
             }
-            
+
             function getColor(c_id) {
                 var colors = ['green', 'blue','red', 'purple','black'];
                 return colors[c_id];
@@ -53,6 +53,7 @@
                 if(time_start == 0){
                     time_start = touchHistory.get(0).time;
                 }
+
                 var time_diff = touchHistory.get(0).time - time_start;
                 touch_data.push({id:e.touch.id,x:touchHistory.get(0).clientX,y:touchHistory.get(0).clientY,time:time_diff});
                 if (!$.touch.allTouches[e.touch.id].color) $.touch.allTouches[e.touch.id].color = getColor(e.touch.id);
@@ -70,7 +71,9 @@
                 touchDown: function () {
                     $num_touchDown +=1;
                     if($num_touchDown > 5){
+                        $('#canvas').unbind('touchmove');
                         alert("Max number of touch down reached");
+
                         return false;
                     }
                     return true;
@@ -82,7 +85,9 @@
                     type: "POST",
                     url: "/data_post",
                     data: {finger_data:touch_data},
-                    success: function(data){alert("Data successfully uploaded.");},
+                    success: function(data){
+                        alert("Data successfully uploaded.");
+                        location.reload();},
                     failure: function(errMsg) {
                         alert(errMsg);
                     }
