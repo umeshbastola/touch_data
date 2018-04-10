@@ -4,5 +4,6 @@ Rails.application.routes.draw do
   root to: "home#index"
 
 	post '/data_post', to: 'home#save_data'
-	get '/csv', to: 'home#all_csv'
+	post '/verify_data_post', to: 'chnmm_login#verify_user'
+	post '/login_request', to: 'chnmm_login#login_possible'
 end

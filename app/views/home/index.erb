@@ -86,7 +86,7 @@
                 $.ajax({
                     type: "POST",
                     url: "/data_post",
-                    data: {finger_data:touch_data},
+                    data: {finger_data:touch_data,password_gesture:1},
                     success: function(data){
                         alert("Data successfully uploaded.");
                         location.reload();},

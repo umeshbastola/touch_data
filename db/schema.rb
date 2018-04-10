@@ -10,15 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180318114744) do
+ActiveRecord::Schema.define(version: 20180410094319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "gestures", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "verified"
+  end
+
   create_table "trajectories", force: :cascade do |t|
     t.integer "user_id"
     t.integer "gesture_id"
-    t.integer "stroke_id"
+    t.integer "is_password"
     t.integer "stroke_seq"
     t.integer "exec_num"
     t.text "points", default: [], array: true
