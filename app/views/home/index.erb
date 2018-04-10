@@ -1,5 +1,5 @@
 <script type="text/javascript">
-        $base_id = 0;
+        $base_id = -1;
         $num_touchDown =0;
         $.touch.triggerMouseEvents = true;
         $.touch.orientationChanged(function () {
@@ -44,9 +44,10 @@
                 ctx.fill();
             }
 
-            function getColor(c_id) {
+            function getColor() {
+                $base_id+=1;
                 var colors = ['green', 'blue','red', 'purple','black'];
-                return colors[c_id];
+                return colors[$base_id];
             }
             
             function handleTouch2(e, touchHistory) {
@@ -55,8 +56,9 @@
                 }
 
                 var time_diff = touchHistory.get(0).time - time_start;
-                touch_data.push({id:e.touch.id,x:touchHistory.get(0).clientX,y:touchHistory.get(0).clientY,time:time_diff});
-                if (!$.touch.allTouches[e.touch.id].color) $.touch.allTouches[e.touch.id].color = getColor(e.touch.id);
+                
+                if (!$.touch.allTouches[e.touch.id].color) $.touch.allTouches[e.touch.id].color = getColor();
+                touch_data.push({id:e.touch.id,x:touchHistory.get(0).clientX,y:touchHistory.get(0).clientY,time:time_diff,color:$.touch.allTouches[e.touch.id].color});
                 var ctx = this.getContext('2d');
                 ctx.beginPath();
                 ctx.moveTo(touchHistory.get(0).clientX, touchHistory.get(0).clientY);
@@ -100,5 +102,15 @@
     <canvas id="canvas" style="background: silver"></canvas>
     <div id='path' style="overflow-y: visible;"></div>
     <input type="button" class="data_json" value="Save Data"></input>
-    
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <% if user_signed_in? %>
+      <li>
+      <%= link_to('Logout', destroy_user_session_path, method: :delete) %>        
+      </li>
+    <% end %>
+</div>
+
+<!-- Use any element to open the sidenav -->
+<span class="open_navslide" onclick="openNav()">>></span>
 </body>

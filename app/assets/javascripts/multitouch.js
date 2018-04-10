@@ -19,7 +19,7 @@
  *
  */
 (function ($) {
-    $custom_id = -1;
+
     if ($.touch) {
         console.warn('$.touch will be overriden, call $.touch.noConflict to restore');
     }
@@ -197,18 +197,19 @@
             if (touchEventType === false) return false;
 
             var preventDefault = $.touch.preventDefault;
+
             $.each(e.changedTouches ? e.changedTouches : e.touches || [e], function (_, e) {
-                var touch = $.touch.allTouches[$custom_id] || false;
+                var touchId = e.identifier || 0,
+                    touch = $.touch.allTouches[touchId] || false;
 
                 if (touch === false) {
                     if (touchEventType === 'touchdown') {
                         // create a new touch
-                        $custom_id += 1;
                         touch = {
                             target: e.target,
-                            id: $custom_id,
+                            id: touchId,
                         }
-                        $.touch.allTouches[$custom_id] = touch;
+                        $.touch.allTouches[touchId] = touch;
                     } else {
                         return false;
                     }
@@ -248,7 +249,7 @@
 
                 // unregister touch
                 if (touchEventType == 'touchup') {
-                    delete $.touch.allTouches[$custom_id];
+                    delete $.touch.allTouches[touchId];
                 }
 
                 // check for local override of global preventDefault
