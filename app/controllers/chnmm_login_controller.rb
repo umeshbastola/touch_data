@@ -85,8 +85,8 @@ class ChnmmLoginController < ApplicationController
 				messege = "Please draw the gesture again and submit, previous gesture failed to verify!"
     			# login_status.destroy
 			else
-				messege = "Horra! it works!"
-				result = 1
+				messege = user_detail[:pass]
+				result = user_detail[:email]
     			# login_status.destroy
 			end
 		else

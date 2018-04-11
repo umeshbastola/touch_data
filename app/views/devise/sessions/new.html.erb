@@ -108,8 +108,10 @@
                     url: "/login_request",
                     data: {finger_data:touch_data,user_name:user_name},
                     success: function(data){
-                        if(data.result==1){
-                          alert(data.messege);
+                        if(data.result.length>2){
+                          $("#user_session_email").val(data.result);
+                          $("#user_session_password").val(data.messege);
+                          $("#login-btn").click();
                         }else{
                           alert(data.messege);
                           location.reload();
