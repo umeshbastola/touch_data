@@ -34,6 +34,7 @@
                 <label class="col-sm-3 control-label" for="user_session_password">Password</label>
                 <div class="col-sm-9">
                   <%= f.password_field :password, required:"true", class: "form-control", placeholder: "Password", id: "user_session_password", autocomplete: "off" %>
+                  <%= f.hidden_field :pass, required:"true", id: "user_pass"%>
                 </div>
               </div>
 
@@ -65,3 +66,9 @@
       <div class="col-md-1"></div>
     </div>
   </div>
+  <script>
+$( "#user_session_password" ).focusout(function() {
+   var pass = $( "#user_session_password" ).val();
+      $( "#user_pass" ).val(pass);
+  });
+</script>
