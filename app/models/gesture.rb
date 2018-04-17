@@ -1,2 +1,0 @@
-class Gesture < ApplicationRecord
-end

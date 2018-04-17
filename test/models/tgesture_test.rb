@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class GestureTest < ActiveSupport::TestCase
+class TgestureTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

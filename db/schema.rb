@@ -10,14 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180410165347) do
+ActiveRecord::Schema.define(version: 20180416090747) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "gestures", force: :cascade do |t|
+  create_table "geslogs", force: :cascade do |t|
     t.integer "user_id"
     t.integer "verified"
+  end
+
+  create_table "gesture", id: false, force: :cascade do |t|
+    t.integer "id"
+    t.string "name", limit: 255
+  end
+
+  create_table "tgestures", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.string "#<ActiveRecord::ConnectionAdapters::PostgreSQL::TableDefinition"
   end
 
   create_table "trajectories", force: :cascade do |t|

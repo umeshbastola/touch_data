@@ -1,0 +1,2 @@
+class Geslog < ApplicationRecord
+end

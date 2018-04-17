@@ -2,6 +2,8 @@ class HomeController < ApplicationController
 	before_action :authenticate_user!
 	ActionController::Parameters.permit_all_parameters = true
 	def index
+		@users = User.all
+		@gestures = Tgesture.all
 	end
 
 	def save_data
@@ -32,7 +34,7 @@ class HomeController < ApplicationController
 		puts order_array
 
 		# get execution sequence id, nth execution of gesture
-		exec_id = Trajectory.where(:user_id => authenticate_user![:id], :gesture_id => 0 ).maximum("exec_num")
+		exec_id = Trajectory.where(:user_id => authenticate_user![:id], :gesture_id => params[:gesture_id] ).maximum("exec_num")
 		if(exec_id==nil)
 			exec_id = 1
 		else
@@ -53,8 +55,8 @@ class HomeController < ApplicationController
 			sequence = order_array.find_index { |k,_| k== stroke } 
 			data_source_hash = {
 				:user_id => authenticate_user![:id],
-				:gesture_id => 0,
-				:is_password => params[:password_gesture].to_i,
+				:gesture_id => params[:gesture_id],
+				:is_password => params[:password_gesture],
 				:exec_num => exec_id,
 				:stroke_seq => sequence,
 				:points => single_stroke[stroke]
@@ -65,4 +67,22 @@ class HomeController < ApplicationController
 			trace_detail.save
 		end	
 	end
+
+	def get_gesture
+		strokes = Array.new
+		raw_data = Trajectory.where(:user_id => params[:id], :gesture_id => params[:gesture_id] )
+		puts raw_data.length
+
+		raw_data.each do | stroke | 
+			if strokes[stroke[:stroke_seq]]
+				strokes[stroke[:stroke_seq]].push(stroke[:points])
+			else
+				first_stroke = Array.new
+				first_stroke.push(stroke[:points])
+				strokes[stroke[:stroke_seq]] = first_stroke
+			end
+		end
+		render :json => {:result => raw_data}
+	end
+
 end

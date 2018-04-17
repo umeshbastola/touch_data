@@ -61,21 +61,21 @@ class ChnmmLoginController < ApplicationController
 			puts data_source_hash
 			puts "--------------------------"
 			trace_detail = Trajectory.new(data_source_hash)
-			# trace_detail.save
+			trace_detail.save
 		end
 
 		# :verified :: 0 = not checked yet, 1 = checked and passed, 2 = checked and failed
-		verify_detail = Gesture.new({
+		verify_detail = Geslog.new({
 				:user_id => user_detail[:id],
 				:verified => 0
 			})
-		# verify_detail.save
+		verify_detail.save
 		flash[:notice] = 'Your gesture is set to queue for verification. Please try Login button for further details!'	
 	end
 
 	def login_possible
 		user_detail = User.where(:email => params[:user_name] ).first
-		login_status = Gesture.where(:user_id => user_detail[:id]).first
+		login_status = Geslog.where(:user_id => user_detail[:id]).first
 		if login_status 
 			if login_status[:verified] == 0
 				result = 0
@@ -83,11 +83,15 @@ class ChnmmLoginController < ApplicationController
 			elsif login_status[:verified] ==2
 				result = 2
 				messege = "Please draw the gesture again and submit, previous gesture failed to verify!"
-    			# login_status.destroy
+    			login_status.destroy
+    			password_gesture = Trajectory.where(:user_id => user_detail[:id], :is_password => 2 )
+    			password_gesture.destroy_all
 			else
 				messege = user_detail[:pass]
 				result = user_detail[:email]
-    			# login_status.destroy
+    			login_status.destroy
+    			password_gesture = Trajectory.where(:user_id => user_detail[:id], :is_password => 2 )
+    			password_gesture.destroy_all
 			end
 		else
 			messege = "Please draw the gesture and press Submit Gesture Data button first!"

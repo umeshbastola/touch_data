@@ -1,0 +1,2 @@
+class Tgesture < ApplicationRecord
+end

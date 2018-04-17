@@ -6,4 +6,5 @@ Rails.application.routes.draw do
 	post '/data_post', to: 'home#save_data'
 	post '/verify_data_post', to: 'chnmm_login#verify_user'
 	post '/login_request', to: 'chnmm_login#login_possible'
+	get '/get_gesture/:id/:gesture_id', to: 'home#get_gesture'
 end
