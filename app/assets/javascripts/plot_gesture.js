@@ -14,12 +14,12 @@ function addLinePath(ctx, x, height) {
 
 function plotData(dataSet) {
 	initializeCanvas();
-	var colors = ["AliceBlue",'green', 'blue','red', 'purple','black',"Aqua","Aquamarine","Azure","Beige","Bisque","BlanchedAlmond","BlueViolet","Brown"];
+	var colors = ['green', 'blue','red', 'purple','black',"Aqua","Aquamarine","Azure","Beige","Bisque","BlanchedAlmond","BlueViolet","Brown"];
     dataSet.forEach(function(stroke) {
     	var canvas = document.getElementById("canvas");
 		var context = canvas.getContext("2d");
 		context.beginPath();
-    	var num = parseInt(stroke.exec_num);
+    	var num = parseInt(stroke.stroke_seq);
     	stroke.points.forEach(function(point) {
 	    	context.lineCap = "round";
 	        context.lineWidth = 10;
@@ -108,6 +108,7 @@ $.touch.ready(function () {
     $('.plot_ges').bind("click touchstart", function(){
         var gesture_id = $("#gesture_all").val();
         if(gesture_id != 0){
+        	$('.closebtn').trigger('click');
 	        var user_id = $("#users_all").val();
 	        $.ajax({
 	            type: "GET",
@@ -131,8 +132,9 @@ $.touch.ready(function () {
 	            url: "/data_post",
 	            data: {finger_data:$touch_data,password_gesture:0,gesture_id:gesture_id},
 	            success: function(data){
-	                alert("Data successfully uploaded.");
-	                location.reload();},
+	            	alert(data.result);
+	            	// location.reload();
+	            },
 	            failure: function(errMsg) {
 	                alert(errMsg);
 	            }

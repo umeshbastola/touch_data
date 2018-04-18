@@ -268,8 +268,8 @@
                 }
             }
         },
-        /** preventDefault is by default true to globally prevent default browser behaviour for touch events, but can be globally set to false and overriden locally */
-        preventDefault: true,
+        /** preventDefault is by default true to globally prevent default browser behaviour for touch events, but can be globally se
+t to false and overriden locally */
         /** triggerMouseEvents can be set to true to simulate touch events, e.g. for testing on non-touch devices */
         triggerMouseEvents: false,
         /** history holds the current touch history up to a length of $.touch.historyMaxSize */

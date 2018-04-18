@@ -6,7 +6,7 @@
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn">&times;</a>
   <% if user_signed_in? %>
-      <li>
+      <li style="margin-bottom: 20px;">
       <%= link_to('Logout', destroy_user_session_path, method: :delete) %>        
       </li>
     <% end %>
@@ -21,7 +21,7 @@
         <option value=<%= gesture[:id] %>><%= gesture[:name] %></option>
     <% end %>
     </select>
-    <input type="button" class="plot_ges" value="Plot Data">
+    <div><input type="button" class="plot_ges" value="Plot Data"></div>
 </div>
 
 <!-- Use any element to open the sidenav -->
