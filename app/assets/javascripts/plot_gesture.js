@@ -143,4 +143,40 @@ $.touch.ready(function () {
 		alert("Please select a gesture from dropdown and draw!")
 	}
     });
+    $('.delete_gesture').bind("click touchstart", function(){
+        var gesture_id = $("#gesture_all").val();
+        if(gesture_id != 0){
+            $.ajax({
+                type: "GET",
+                url: "/delete_gesture",
+                data: {gesture_id:gesture_id},
+                success: function(data){
+                    alert("Gesture Sucessfully Deleted");
+                },
+                failure: function(errMsg) {
+                    alert(errMsg);
+                }
+            });
+        }else{
+        alert("Please select a gesture from dropdown!")
+    }
+    });
+    $('.delete_gesture_part').bind("click touchstart", function(){
+        var gesture_id = $("#gesture_all").val();
+        if(gesture_id != 0){
+            $.ajax({
+                type: "GET",
+                url: "/delete_gesture_exec",
+                data: {gesture_id:gesture_id},
+                success: function(data){
+                    alert("Gesture Sucessfully Deleted");
+                },
+                failure: function(errMsg) {
+                    alert(errMsg);
+                }
+            });
+        }else{
+        alert("Please select a gesture from dropdown!")
+    }
+    });
 });

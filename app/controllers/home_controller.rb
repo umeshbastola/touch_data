@@ -139,4 +139,16 @@ class HomeController < ApplicationController
 	  	distance = Hash[distance.sort_by{|k, v| v}]
 	  return distance
 	end
+
+	def destroy
+		Trajectory.where(:user_id => authenticate_user![:id], :gesture_id => params[:gesture_id] ).destroy_all
+	end
+
+	def destroy_last
+		exec_id = Trajectory.where(:user_id => authenticate_user![:id], :gesture_id => params[:gesture_id] ).maximum("exec_num")
+		puts exec_id
+		if exec_id != nil 	
+			Trajectory.where(:user_id => authenticate_user![:id], :gesture_id => params[:gesture_id], :exec_num => exec_id ).destroy_all
+		end
+	end
 end

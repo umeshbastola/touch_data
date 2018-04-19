@@ -11,7 +11,7 @@
     top: 10px;
     left: 10px;
 }
-.plot_ges {
+.green_btn {
     background-color: #4CAF50;
     border: none;
     color: white;
@@ -20,6 +20,7 @@
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    margin-bottom: 10px;
 }
 .check_me {
     background-color: #4CAF50;
