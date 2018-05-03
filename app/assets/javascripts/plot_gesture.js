@@ -64,7 +64,7 @@ $.touch.ready(function () {
     
     function getColor() {
         $base_id+=1;
-        var colors = ['green', 'blue','red', 'purple','black'];
+        var colors = ['green', 'blue','red', 'purple','black',"Aqua","Aquamarine","Azure","Beige","Bisque","BlanchedAlmond","BlueViolet","Brown"];
         return colors[$base_id];
     }
     
@@ -88,12 +88,6 @@ $.touch.ready(function () {
     }
     $('#canvas').touchable({
         touchDown: function () {
-            $num_touchDown +=1;
-            if($num_touchDown > 5){
-                $('#canvas').unbind('touchmove');
-                alert("Max number of touch down reached");
-                return false;
-            }
             return true;
         },
         touchMove: handleTouch2
@@ -105,7 +99,7 @@ $.touch.ready(function () {
     	location.reload();
     });
 
-    $('.plot_ges').bind("click touchstart", function(){
+    $('.plot_ges').bind("click", function(){
         var gesture_id = $("#gesture_all").val();
         if(gesture_id != 0){
         	$('.closebtn').trigger('click');
@@ -124,7 +118,7 @@ $.touch.ready(function () {
     	}
     });
 
-	$('.data_json').bind("click touchstart", function(){
+	$('.data_json').bind("click", function(){
 		var gesture_id = $("#gesture_all").val();
         if(gesture_id != 0 && $touch_data.length){
 	        $.ajax({
@@ -143,7 +137,7 @@ $.touch.ready(function () {
 		alert("Please select a gesture from dropdown and draw!")
 	}
     });
-    $('.delete_gesture').bind("click touchstart", function(){
+    $('.delete_gesture').bind("click", function(){
         var gesture_id = $("#gesture_all").val();
         if(gesture_id != 0){
             $.ajax({
@@ -161,7 +155,7 @@ $.touch.ready(function () {
         alert("Please select a gesture from dropdown!")
     }
     });
-    $('.delete_gesture_part').bind("click touchstart", function(){
+    $('.delete_gesture_part').bind("click", function(){
         var gesture_id = $("#gesture_all").val();
         if(gesture_id != 0){
             $.ajax({

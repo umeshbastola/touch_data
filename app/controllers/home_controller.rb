@@ -33,15 +33,15 @@ class HomeController < ApplicationController
 		# get execution order of different strokes in comparision with x and y plain
 		order_array = base_compare.sort_by {|k,v| v[:x]}
 
-		raw_data = Trajectory.where(:user_id => authenticate_user![:id], :gesture_id => params[:gesture_id], :exec_num => 1 )
-		raw_data.length > 0 ? first = false : first = true
-		
 		# get execution sequence id, nth execution of gesture
 		exec_id = Trajectory.where(:user_id => authenticate_user![:id], :gesture_id => params[:gesture_id] ).maximum("exec_num")
 		if(exec_id==nil)
 			exec_id = 1
+			first = true
 		else
+			raw_data = Trajectory.where(:user_id => authenticate_user![:id], :gesture_id => params[:gesture_id], :exec_num => exec_id )
 			exec_id = exec_id + 1
+			first = false
 		end
 
 		# collect all points of individual stroke in separate hash single_stroke[value[:id].to_i]
