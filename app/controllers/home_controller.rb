@@ -60,12 +60,10 @@ class HomeController < ApplicationController
 				render :json => {:result => final_msg}
 				return
 			end
-			puts final_msg
 			all_distances = Array.new
 			single_stroke.each do | stroke, data|
 				all_distances.push(manhattan_distance(single_stroke[stroke][0],raw_data))
 			end
-			puts all_distances
 			all_distances.each do | serial | 
 				for k in 0..(all_distances.length-1)				
 			  		if serial.keys[0] == all_distances[k].keys[0]
@@ -79,7 +77,6 @@ class HomeController < ApplicationController
 			  		end
 				end
 			end
-			puts all_distances
 			unique_key = Array.new
 			for k in 0..(all_distances.length-1)
 				unique_key.push(all_distances[k].keys[0])
@@ -110,7 +107,7 @@ class HomeController < ApplicationController
 			puts data_source_hash
 			# puts "--------------------------"
 			trace_detail = Trajectory.new(data_source_hash)
-			trace_detail.save
+			# trace_detail.save
 		end	
 		render :json => {:result => "Gesture sucessfully uploaded!"}
 		return
@@ -127,6 +124,15 @@ class HomeController < ApplicationController
 				first_stroke.push(stroke[:points])
 				strokes[stroke[:stroke_seq]] = first_stroke
 			end
+		end
+		render :json => {:result => raw_data}
+	end
+
+	def get_single_exec
+		raw_data = "a"
+		exec_id = Trajectory.where(:user_id => authenticate_user![:id], :gesture_id => params[:gesture_id] ).maximum("exec_num")
+		if(exec_id != nil)
+			raw_data = Trajectory.where(:user_id => authenticate_user![:id], :gesture_id => params[:gesture_id], :exec_num => exec_id )
 		end
 		render :json => {:result => raw_data}
 	end

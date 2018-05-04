@@ -12,7 +12,7 @@ function addLinePath(ctx, x, height) {
     ctx.lineTo(x, height);
 }
 
-function plotData(dataSet) {
+function plotData(dataSet, opacity) {
 	initializeCanvas();
 	var colors = ['green', 'blue','red', 'purple','black',"Aqua","Aquamarine","Azure","Beige","Bisque","BlanchedAlmond","BlueViolet","Brown"];
     dataSet.forEach(function(stroke) {
@@ -21,11 +21,14 @@ function plotData(dataSet) {
 		context.beginPath();
     	var num = parseInt(stroke.stroke_seq);
     	stroke.points.forEach(function(point) {
+            if(opacity == 1)
+            context.globalAlpha = 0.2 
 	    	context.lineCap = "round";
 	        context.lineWidth = 10;
 	        context.strokeStyle = colors[num];
 	  		context.moveTo(parseInt(point[0])+200,parseInt(point[1])+100);
-	        context.lineTo(parseInt(point[0])+200,parseInt(point[1])+100);    
+	        context.lineTo(parseInt(point[0])+200,parseInt(point[1])+100); 
+
 		});
 		context.stroke();
 	});
@@ -78,6 +81,7 @@ $.touch.ready(function () {
         if (!$.touch.allTouches[e.touch.id].color) $.touch.allTouches[e.touch.id].color = getColor();
         $touch_data.push({id:e.touch.id,x:touchHistory.get(0).clientX,y:touchHistory.get(0).clientY,time:time_diff,color:$.touch.allTouches[e.touch.id].color});
         var ctx = this.getContext('2d');
+        ctx.globalAlpha = 1;
         ctx.beginPath();
         ctx.moveTo(touchHistory.get(0).clientX, touchHistory.get(0).clientY);
         ctx.lineTo(e.clientX, e.clientY);
@@ -96,7 +100,8 @@ $.touch.ready(function () {
     var $canvas = $('#canvas');
     var storedEvent = $canvas;
     $('.clear_canvas').bind("click touchstart", function(){
-    	location.reload();
+    	//location.reload();
+        initializeCanvas();
     });
 
     $('.plot_ges').bind("click", function(){
@@ -108,7 +113,7 @@ $.touch.ready(function () {
 	            type: "GET",
 	            url: "/get_gesture/"+user_id+"/"+gesture_id,
 	            success: function(data){
-	                plotData(data.result)},
+	                plotData(data.result,0)},
 	            failure: function(errMsg) {
 	                alert(errMsg);
 	            }
@@ -127,7 +132,7 @@ $.touch.ready(function () {
 	            data: {finger_data:$touch_data,password_gesture:0,gesture_id:gesture_id},
 	            success: function(data){
 	            	alert(data.result);
-	            	// location.reload();
+                    initializeCanvas();
 	            },
 	            failure: function(errMsg) {
 	                alert(errMsg);
@@ -173,4 +178,22 @@ $.touch.ready(function () {
         alert("Please select a gesture from dropdown!")
     }
     });
+
+    $("#gesture_all").change(function(){
+        var gesture_id = $("#gesture_all").val();
+        if(gesture_id != 0){
+            $.ajax({
+                type: "GET",
+                url: "/get_gesture/"+gesture_id,
+                success: function(data){
+                    if(data.result.length>1)
+                    plotData(data.result, 1);
+                else
+                    initializeCanvas();},
+                failure: function(errMsg) {
+                    alert(errMsg);
+                }
+            });
+        }
+    })
 });
