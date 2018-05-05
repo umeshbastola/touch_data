@@ -107,7 +107,7 @@ class HomeController < ApplicationController
 			puts data_source_hash
 			# puts "--------------------------"
 			trace_detail = Trajectory.new(data_source_hash)
-			# trace_detail.save
+			trace_detail.save
 		end	
 		render :json => {:result => "Gesture sucessfully uploaded!"}
 		return
