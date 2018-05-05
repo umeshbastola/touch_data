@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180416090747) do
+ActiveRecord::Schema.define(version: 20180505141046) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20180416090747) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.string "#<ActiveRecord::ConnectionAdapters::PostgreSQL::TableDefinition"
+    t.integer "num_stroke"
   end
 
   create_table "trajectories", force: :cascade do |t|

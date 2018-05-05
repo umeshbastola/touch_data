@@ -118,6 +118,7 @@
     overflow-x: hidden; /* Disable horizontal scroll */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
     padding:0 30px;
+    overflow: hidden;
 }
 
 /* When you mouse over the navigation links, change their color */

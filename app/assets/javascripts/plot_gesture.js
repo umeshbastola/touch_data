@@ -125,11 +125,12 @@ $.touch.ready(function () {
 
 	$('.data_json').bind("click", function(){
 		var gesture_id = $("#gesture_all").val();
+        var strokes = $('option:selected', "#gesture_all").data('strokes');
         if(gesture_id != 0 && $touch_data.length){
 	        $.ajax({
 	            type: "POST",
 	            url: "/data_post",
-	            data: {finger_data:$touch_data,password_gesture:0,gesture_id:gesture_id},
+	            data: {finger_data:$touch_data,password_gesture:0,gesture_id:gesture_id,num_stroke:strokes},
 	            success: function(data){
 	            	alert(data.result);
                     initializeCanvas();
@@ -181,6 +182,8 @@ $.touch.ready(function () {
 
     $("#gesture_all").change(function(){
         var gesture_id = $("#gesture_all").val();
+        var option = $('option:selected', "#gesture_all").data('count');
+        $(".desc").html($("."+option).html());
         if(gesture_id != 0){
             $.ajax({
                 type: "GET",

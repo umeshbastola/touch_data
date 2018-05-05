@@ -55,8 +55,8 @@ class HomeController < ApplicationController
 		end
 
 		if !first
-			if single_stroke.length != raw_data.length
-				final_msg += "The number of finger strokes does not match!\n"
+			if single_stroke.length != params[:num_stroke].to_i
+				final_msg += "This gesture requires exactly "+params[:num_stroke] +" strokes, the number of finger strokes does not match!\n"
 				render :json => {:result => final_msg}
 				return
 			end
@@ -100,7 +100,7 @@ class HomeController < ApplicationController
 				:gesture_id => params[:gesture_id],
 				:is_password => params[:password_gesture],
 				:exec_num => exec_id,
-				:stroke_seq => first == true ? i : all_distances[i].keys[0],
+				:stroke_seq => sequence,
 				:points => single_stroke[stroke]
 			}
 			i += 1

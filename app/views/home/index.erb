@@ -17,13 +17,72 @@
     </select>
     <select name="gestures" id="gesture_all">
         <option value="0">Select Gesture</option>
-      <% @gestures.each do |gesture| %>
-        <option value=<%= gesture[:id] %>><%= gesture[:name] %></option>
-    <% end %>
+      <% count=1; @gestures.each do |gesture| %>
+        <option data-strokes=<%= gesture[:num_stroke] %> data-count=<%= count %> value=<%= gesture[:id] %>><%= gesture[:name] %></option>
+    <%count +=1; end %>
     </select>
     <div><input type="button" class="plot_ges green_btn" value="Plot Data"></div>
     <div><input type="button" class="delete_gesture green_btn" value="Delete Gesture">
     <input type="button" class="delete_gesture_part green_btn" value="Delete Last Execution"></div>
+    <div class="desc"></div>
+    <div class="hidden_element" style="visibility: hidden;">
+    <div class="1">
+        Close: With Index finger parallel to y-axis, open the hand to cover the screen, close the hand around halfway toward the palm’s center.
+         <%= image_tag("close.png", {:style => "width:100%;"}) %>
+    </div>
+    <div class="2">
+        FTCW: Put Thumb and Index finger parallel to x-plain, keep thumb fixed, other fingertips rotate around it in a clockwise direction making quarter circle
+        <%= image_tag("rotate.png", {:style => "width:100%;"}) %>
+    </div>
+    <div class="3">
+        Bolt fast: Excluding thumb finger, four finger move from top to down forming electric bolt like symbol in fast motion.
+        <%= image_tag("bolt.png", {:style => "width:60%;"}) %>
+    </div>
+    <div class="4">
+        Bolt slow: Excluding thumb finger, four finger move from top to down forming electric bolt like symbol in slow motion.
+        <%= image_tag("bolt.png", {:style => "width:60%;"}) %>
+    </div>
+    <div class="5">
+        Circle Similar fast: Using one fingers from each hands, two circle are drawn in same direction(clockwise or anti clockwise) in fast motion
+        <%= image_tag("circle.png", {:style => "width:100%;"}) %>
+    </div>
+    <div class="6">
+        Circle Similar slow: Using one fingers from each hands, two circle are drawn in same direction(clockwise or anti clockwise) in slow motion
+        <%= image_tag("circle.png", {:style => "width:100%;"}) %>
+    </div>
+    <div class="8">
+        Circle different fast: Using one fingers from each hands, two circle are drawn in different direction one clockwise and another anti clockwise in fast motion.
+        <%= image_tag("circle.png", {:style => "width:100%;"}) %>
+    </div>
+    <div class="7">
+        Circle different slow: Using one fingers from each hands, two circle are drawn in different direction one clockwise and another anti clockwise in slow motion.
+        <%= image_tag("circle.png", {:style => "width:100%;"}) %>
+    </div>
+    <div class="10">
+        I right-left: Using three fingers, cursive "i" like shape is drawn from right to left of the screen
+        <%= image_tag("i.png", {:style => "width:100%;"}) %>
+    </div>
+    <div class="9">
+        I left-right: Using three fingers, cursive "i" like shape is drawn from left to right of the screen
+        <%= image_tag("i.png", {:style => "width:100%;"}) %>
+    </div>
+    <div class="11">
+        Erase fast: Move two fingers making a "Z" like shape in fast motion
+        <%= image_tag("z.png", {:style => "width:100%;"}) %>
+    </div>
+    <div class="12">
+        Erase slow: move two fingers making a "Z" like shape in slow motion
+        <%= image_tag("z.png", {:style => "width:100%;"}) %>
+    </div>
+    <div class="13">
+        Dollar S and || : Make dollar sign starting from S and later drawing lines
+        <%= image_tag("$.png", {:style => "width:60%;"}) %>
+    </div>
+    <div class="14">
+        Dollar || and S : Make dollar sign starting from lines and later drawing S shape
+        <%= image_tag("$.png", {:style => "width:60%;"}) %>
+    </div>
+</div>
 </div>
 
 <!-- Use any element to open the sidenav -->
