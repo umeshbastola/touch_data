@@ -53,13 +53,12 @@ class HomeController < ApplicationController
 			
 			single_stroke[value[:color]] << point_data
 		end
-
+		if single_stroke.length != params[:num_stroke].to_i
+			final_msg += "This gesture requires exactly "+params[:num_stroke] +" strokes, the number of finger strokes does not match!\n"
+			render :json => {:result => final_msg}
+			return
+		end
 		if !first
-			if single_stroke.length != params[:num_stroke].to_i
-				final_msg += "This gesture requires exactly "+params[:num_stroke] +" strokes, the number of finger strokes does not match!\n"
-				render :json => {:result => final_msg}
-				return
-			end
 			all_distances = Array.new
 			single_stroke.each do | stroke, data|
 				all_distances.push(manhattan_distance(single_stroke[stroke][0],raw_data))
@@ -94,7 +93,11 @@ class HomeController < ApplicationController
 		# is_password: 0 = normal gesture, 1 = password gesture, 2 = check for password matching
 		i=0
 		single_stroke.each do | stroke, data|
-			sequence = order_array.find_index { |k,_| k== stroke } 
+			if(params[:gesture_id] == 2 && !first)
+				sequence = all_distances[i].keys[0]
+			else
+				sequence = order_array.find_index { |k,_| k== stroke } 
+			end		
 			data_source_hash = {
 				:user_id => authenticate_user![:id],
 				:gesture_id => params[:gesture_id],
