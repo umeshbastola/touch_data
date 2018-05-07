@@ -122,13 +122,10 @@ $.touch.ready(function () {
     		alert("Please select a gesture from dropdown!")
     	}
     });
-
-    var in_progress = false;
 	$('.data_json').bind("click", function(){    
 		var gesture_id = $("#gesture_all").val();
         var strokes = $('option:selected', "#gesture_all").data('strokes');
-        if(!in_progress && gesture_id != 0 && $touch_data.length){
-            in_progress = true;
+        if(gesture_id != 0 && $touch_data.length){
 	        $.ajax({
 	            type: "POST",
 	            url: "/data_post",
@@ -136,11 +133,9 @@ $.touch.ready(function () {
 	            success: function(data){
 	            	alert(data.result);
                     initializeCanvas();
-                    in_progress = false;
 	            },
 	            failure: function(errMsg) {
 	                alert(errMsg);
-                    in_progress = false;
 	            }
 	      	});
 	    }else{
