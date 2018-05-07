@@ -122,10 +122,13 @@ $.touch.ready(function () {
     		alert("Please select a gesture from dropdown!")
     	}
     });
+
+    var in_progress = false;
 	$('.data_json').bind("click", function(){    
 		var gesture_id = $("#gesture_all").val();
         var strokes = $('option:selected', "#gesture_all").data('strokes');
-        if(gesture_id != 0 && $touch_data.length){
+        if(!in_progress && gesture_id != 0 && $touch_data.length){
+            in_progress = true;
 	        $.ajax({
 	            type: "POST",
 	            url: "/data_post",
@@ -133,9 +136,11 @@ $.touch.ready(function () {
 	            success: function(data){
 	            	alert(data.result);
                     initializeCanvas();
+                    in_progress = false;
 	            },
 	            failure: function(errMsg) {
 	                alert(errMsg);
+                    in_progress = false;
 	            }
 	      	});
 	    }else{
@@ -190,6 +195,7 @@ $.touch.ready(function () {
                 url: "/get_last/"+user_id+"/"+gesture_id,
                 success: function(data){
                 if(data.result.length>1){
+                    console.log(data)
                     plotData(data.result, 1);
                     $(".plot_ges").val("Plot Data ["+data.last_exec+"] ");}
                 else{
