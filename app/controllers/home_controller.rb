@@ -4,6 +4,7 @@ class HomeController < ApplicationController
 	def index
 		@users = User.all
 		@gestures = Tgesture.all
+		@me = authenticate_user![:email]
 	end
 
 	def save_data
@@ -133,11 +134,11 @@ class HomeController < ApplicationController
 
 	def get_single_exec
 		raw_data = "a"
-		exec_id = Trajectory.where(:user_id => authenticate_user![:id], :gesture_id => params[:gesture_id] ).maximum("exec_num")
+		exec_id = Trajectory.where(:user_id => params[:id], :gesture_id => params[:gesture_id] ).maximum("exec_num")
 		if(exec_id != nil)
-			raw_data = Trajectory.where(:user_id => authenticate_user![:id], :gesture_id => params[:gesture_id], :exec_num => exec_id )
+			raw_data = Trajectory.where(:user_id => params[:id], :gesture_id => params[:gesture_id], :exec_num => exec_id )
 		end
-		render :json => {:result => raw_data}
+		render :json => {:result => raw_data, :last_exec => exec_id}
 	end
 
 	def manhattan_distance(pt,raw_data)

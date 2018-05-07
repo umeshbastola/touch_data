@@ -6,9 +6,9 @@
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn">&times;</a>
   <% if user_signed_in? %>
-      <li style="margin-bottom: 20px;">
-      <%= link_to('Logout', destroy_user_session_path, method: :delete) %>        
-      </li>
+      <div style="margin-bottom: 20px;">
+      <%= link_to('Logout: '+@me, destroy_user_session_path, method: :delete) %>        
+      </div>
     <% end %>
     <select name="users" id="users_all">
     <% @users.each do |user| %>

@@ -145,7 +145,7 @@ $.touch.ready(function () {
     });
     $('.delete_gesture').bind("click", function(){
         var gesture_id = $("#gesture_all").val();
-        if(gesture_id != 0){
+        if(gesture_id != 0 && confirm("Are you sure you want to delete the gesture?")){
             $.ajax({
                 type: "GET",
                 url: "/delete_gesture",
@@ -163,7 +163,7 @@ $.touch.ready(function () {
     });
     $('.delete_gesture_part').bind("click", function(){
         var gesture_id = $("#gesture_all").val();
-        if(gesture_id != 0){
+        if(gesture_id != 0 && confirm("Are you sure you want to delete the last execution of this gesture?")){
             $.ajax({
                 type: "GET",
                 url: "/delete_gesture_exec",
@@ -180,19 +180,25 @@ $.touch.ready(function () {
     }
     });
 
-    $("#gesture_all").change(function(){
+    $("#gesture_all,#users_all").change(function(){
         var gesture_id = $("#gesture_all").val();
         var option = $('option:selected', "#gesture_all").data('count');
+        var user_id = $("#users_all").val();
         $(".desc").html($("."+option).html());
         if(gesture_id != 0){
             $.ajax({
                 type: "GET",
-                url: "/get_gesture/"+gesture_id,
+                url: "/get_last/"+user_id+"/"+gesture_id,
                 success: function(data){
-                    if(data.result.length>1)
+                if(data.result.length>1){
+                    console.log(data)
                     plotData(data.result, 1);
-                else
-                    initializeCanvas();},
+                    $(".plot_ges").val("Plot Data ["+data.last_exec+"] ");}
+                else{
+                    initializeCanvas();
+                    $(".plot_ges").val("No Data");
+                }
+            },
                 failure: function(errMsg) {
                     alert(errMsg);
                 }
