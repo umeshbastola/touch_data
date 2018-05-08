@@ -40,7 +40,7 @@ class HomeController < ApplicationController
 			exec_id = 1
 			first = true
 		else
-			raw_data = Trajectory.where(:user_id => authenticate_user![:id], :gesture_id => params[:gesture_id], :exec_num => exec_id )
+			raw_data = Trajectory.where(:user_id => authenticate_user![:id], :gesture_id => params[:gesture_id], :exec_num => 1 )
 			exec_id = exec_id + 1
 			first = false
 		end
@@ -62,7 +62,7 @@ class HomeController < ApplicationController
 		if !first
 			all_distances = Array.new
 			single_stroke.each do | stroke, data|
-				all_distances.push(manhattan_distance(single_stroke[stroke][0],raw_data))
+				all_distances.push(shortest_distance(single_stroke[stroke][0],raw_data))
 			end
 			all_distances.each do | serial | 
 				for k in 0..(all_distances.length-1)				
@@ -78,23 +78,22 @@ class HomeController < ApplicationController
 				end
 			end
 			unique_key = Array.new
+			error_sum = 0
 			for k in 0..(all_distances.length-1)
+				error_sum += all_distances[k].values[0]
 				unique_key.push(all_distances[k].keys[0])
 			end
-
-	  		if unique_key.length != unique_key.uniq.length
+	  		if error_sum.to_i > params[:num_stroke].to_i*100 || unique_key.length != unique_key.uniq.length
 	  			final_msg += "Your gesture does not match with previous execution of the gesture selected, please try again!"
 	  			render :json => {:result => final_msg}
 	  			return
 	  		end
-			puts all_distances
-			puts "-------------------------"
 		end
 		# prepare final argument to push into the table
 		# is_password: 0 = normal gesture, 1 = password gesture, 2 = check for password matching
 		i=0
 		single_stroke.each do | stroke, data|
-			if(params[:gesture_id] == 2 && !first)
+			if(params[:gesture_id].to_i < 2 && !first)
 				sequence = all_distances[i].keys[0]
 			else
 				sequence = order_array.find_index { |k,_| k== stroke } 
@@ -141,13 +140,22 @@ class HomeController < ApplicationController
 		render :json => {:result => raw_data, :last_exec => exec_id}
 	end
 
-	def manhattan_distance(pt,raw_data)
+	def shortest_distance(pt,raw_data)
 		distance = Hash.new
 		raw_data.each do | str |
-	  		distance[str[:stroke_seq]] = (pt[0]-str[:points][0][0].to_i).abs + (pt[1]-str[:points][0][1].to_i).abs
+	  		distance[str[:stroke_seq]] = euclidean_distance([pt[0],pt[1]],[str[:points][0][0].to_i,str[:points][0][1].to_i])
 	  	end
 	  	distance = Hash[distance.sort_by{|k, v| v}]
 	  return distance
+	end
+
+
+	def euclidean_distance(p1,p2)
+	  sum_of_squares = 0
+	  p1.each_with_index do |p1_coord,index| 
+	    sum_of_squares += (p1_coord - p2[index]) ** 2 
+	  end
+	  return Math.sqrt( sum_of_squares )
 	end
 
 	def destroy
