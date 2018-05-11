@@ -93,7 +93,7 @@ class HomeController < ApplicationController
 		# is_password: 0 = normal gesture, 1 = password gesture, 2 = check for password matching
 		i=0
 		single_stroke.each do | stroke, data|
-			if(params[:gesture_id].to_i < 2 && !first)
+			if(params[:gesture_id].to_i < 3 && !first)
 				sequence = all_distances[i].keys[0]
 			else
 				sequence = order_array.find_index { |k,_| k== stroke } 

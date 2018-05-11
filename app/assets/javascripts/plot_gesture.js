@@ -20,18 +20,40 @@ function plotData(dataSet, opacity) {
 		var context = canvas.getContext("2d");
 		context.beginPath();
     	var num = parseInt(stroke.stroke_seq);
-    	stroke.points.forEach(function(point) {
-            if(opacity == 1)
+        if(opacity == 1)
             context.globalAlpha = 0.2 
-	    	context.lineCap = "round";
-	        context.lineWidth = 10;
-	        context.strokeStyle = colors[num];
+        context.lineCap = "round";
+        context.lineWidth = 10;
+        context.strokeStyle = colors[num];
+    	stroke.points.forEach(function(point) {
 	  		context.moveTo(parseInt(point[0])+200,parseInt(point[1])+100);
 	        context.lineTo(parseInt(point[0])+200,parseInt(point[1])+100); 
 
 		});
 		context.stroke();
 	});
+}
+
+function plotDataTime(dataSet, opacity){
+    var colors = ['green', 'blue','red', 'purple','black',"Aqua","Aquamarine","Azure","Beige","Bisque","BlanchedAlmond","BlueViolet","Brown"];
+    var canvas = document.getElementById("canvas");
+    context = canvas.getContext("2d");
+    if(opacity == 1)
+        context.globalAlpha = 0.2 
+    context.lineCap = "round";
+    context.lineWidth = 10;
+    dataSet.forEach(function(stroke) {
+        context.beginPath();
+        var num = parseInt(stroke.stroke_seq);       
+        stroke.points.forEach(function(point) {
+            setTimeout(function() {
+            context.strokeStyle = colors[num];
+            context.moveTo(parseInt(point[0])+200,parseInt(point[1])+100);
+            context.lineTo(parseInt(point[0])+200,parseInt(point[1])+100); 
+            context.stroke();
+            }, 1000);
+        });
+    });
 }
 
 function initializeCanvas(){
