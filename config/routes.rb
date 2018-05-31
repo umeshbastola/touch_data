@@ -10,4 +10,6 @@ Rails.application.routes.draw do
 	get '/get_last/:id/:gesture_id', to: 'home#get_single_exec'
 	get 'delete_gesture', :to => 'home#destroy'
 	get 'delete_gesture_exec', :to => 'home#destroy_last'
+	get 'dollarn', :to => 'home#dollarn'
+	get 'all_gestures', :to => 'home#get_gestures'
 end

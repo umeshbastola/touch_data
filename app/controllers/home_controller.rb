@@ -169,4 +169,13 @@ class HomeController < ApplicationController
 			Trajectory.where(:user_id => authenticate_user![:id], :gesture_id => params[:gesture_id], :exec_num => exec_id ).destroy_all
 		end
 	end
+
+	def dollarn
+		
+	end
+
+	def get_gestures
+		gestures = Trajectory.where(:user_id => 1).order(:user_id,:gesture_id,:exec_num)
+		render :json => {:result => gestures}
+	end
 end
