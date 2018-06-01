@@ -1,113 +1,112 @@
-    <div style="margin-bottom: 20px;">
-          <input class="trainer" type="button" value="Train + Recognize" />      
-          </div>
-    <script> 
-    $(function() {
-      var useBoundedRotationInvariance = true;
-      var recognizer = new NDollarRecognizer(useBoundedRotationInvariance);
+<div style="margin-bottom: 20px;">
+  <input class="trainer" type="button" value="Train + Recognize" />      
+</div>
+<script> 
+  $(function() {
+    var useBoundedRotationInvariance = false;
+    var requireSameNoOfStrokes = true;
+    var useProtractor = true;
+    var recognizer = new NDollarRecognizer(useBoundedRotationInvariance);
     $('.trainer').bind("click", function(){
-      
-          $.ajax({
-              type: "GET",
-              url: "/all_gestures",
-              success: function(data){
-              if(data.result.length>1){
-                  var useBoundedRotationInvariance = true;
-                  var recognizer = new NDollarRecognizer(useBoundedRotationInvariance);
-                  var trajectory = [];
-                  var prev_exec = 1;
-                  var prev_user = 1;
-                  var prev_gesture = 1;
-                  var alternate = 1;
-                  var triangle = [[new Point(30, 7),  new Point(103, 7)],
-                                  [new Point(103, 7), new Point(66, 87)],
-                                  [new Point(66, 87), new Point(30, 7)]
-                                 ];
-                 
-                  recognizer.AddGesture( "triangle",useBoundedRotationInvariance, triangle);
-                  $.each(data.result, function(i, item) {
-                    if(item.exec_num != prev_exec){
-                      if(alternate%2 == 1)
-                      {
-                      exec_num = prev_exec;
-                      exec_num = prev_exec > 9 ? exec_num : "0"+exec_num;
-                      recognizer.AddGesture(prev_user+"_"+prev_gesture+"_"+exec_num,useBoundedRotationInvariance, trajectory);
-                      console.log("Adding to pool:"+prev_user+"_"+prev_gesture+"_"+exec_num);
-                      }
-                      alternate++;
-                      trajectory.length = 0;
-                      prev_user = item.user_id;
-                      prev_gesture = item.gesture_id;
-                      prev_exec = item.exec_num;
-                    }
-                    var stroke = [];
-                    $.each(item.points, function(j,point) {
-                      if(j%2==1)
-                      stroke.push(new Point(parseInt(point[j,0]), parseInt(point[j,1])));
-                    });
-                    trajectory.push(stroke);
-                  });
 
+      $.ajax({
+        type: "GET",
+        url: "/all_gestures",
+        success: function(data){
+          if(data.result.length>1){
+            var useBoundedRotationInvariance = true;
+            var recognizer = new NDollarRecognizer(useBoundedRotationInvariance);
+            var trajectory = [];
+            var prev_exec = 1;
+            var prev_user = 1;
+            var prev_gesture = 1;
+            var alternate = 1;
+            $.each(data.result, function(i, item) {
+              if(item.exec_num != prev_exec){
+                if(alternate%2 == 1)
+                {
+                  exec_num = prev_exec;
+                  exec_num = prev_exec > 9 ? exec_num : "0"+exec_num;
+                  recognizer.AddGesture(prev_user+"_"+prev_gesture+"_"+exec_num,useBoundedRotationInvariance, trajectory);
+                  console.log("Adding to pool:"+prev_user+"_"+prev_gesture+"_"+exec_num);
+                }
+                alternate++;
+                trajectory.length = 0;
+                prev_user = item.user_id;
+                prev_gesture = item.gesture_id;
+                prev_exec = item.exec_num;
+              }
+              if(alternate%2 == 1)
+              {
+                var stroke = [];
+                $.each(item.points, function(j,point) {
+                  stroke.push(new Point(parseInt(point[j,0]), parseInt(point[j,1])));
+                });
+                trajectory.push(stroke);
+              }
+            });
 
-                  var true_rejection = 0;
-                  var false_accepted = 0;
-                  var ture_accepted = 0;
-                  $.each(data.result, function(i, item) {
-                    if(item.exec_num != prev_exec){
-                      if(alternate%2 == 1)
-                      {
-                      result = recognizer.Recognize( trajectory, true, true,true);
-                      // console.log("Recognize:"+prev_user+"_"+prev_gesture+"_"+prev_exec);
-                      // console.log(result);
-                      if(result.Score == 0.0){
-                        true_rejection++;
-                      }else{
-                        if(result.Name.substring(0,result.Name.length - 3) == prev_user+"_"+prev_gesture)
-                          ture_accepted++;
-                        else
-                          false_accepted++;
-                      }
-                      
-                      }
-                      alternate++;
-                      trajectory.length = 0;
-                      prev_user = item.user_id;
-                      prev_gesture = item.gesture_id;
-                      prev_exec = item.exec_num;
-                    }
-                    var stroke = [];
-                    $.each(item.points, function(j,point) {
-                      if(j%2==1)
-                      stroke.push(new Point(parseInt(point[j,0]), parseInt(point[j,1])));
-                    });
-                    trajectory.push(stroke);
-                  });
-                  console.log("True acceptance:"+ture_accepted);
-                  console.log("False acceptance:"+false_accepted);
-                  console.log("True Rejection:"+ true_rejection);
+            alternate = 0;
+            var true_rejection = 0;
+            var false_accepted = 0;
+            var ture_accepted = 0;
+            $.each(data.result, function(i, item) {
+              if(item.exec_num != prev_exec){
+                if(alternate%2 == 0 && alternate !=0)
+                {
+                  result = recognizer.Recognize( trajectory, useBoundedRotationInvariance, requireSameNoOfStrokes, useProtractor);
+                  console.log("Recognize:"+prev_user+"_"+prev_gesture+"_"+prev_exec);
+                  console.log(result);
+                  if(result.Score == 0.0){
+                    true_rejection++;
+                  }else{
+                    if(result.Name.substring(0,result.Name.length - 3) == prev_user+"_"+prev_gesture)
+                      ture_accepted++;
+                    else
+                      false_accepted++;
+                  }
+                }
+                alternate++;
+                trajectory.length = 0;
+                prev_user = item.user_id;
+                prev_gesture = item.gesture_id;
+                prev_exec = item.exec_num;
               }
-              else{
-                  console.log("There was error downloading gestures");
+              if(alternate%2 == 0)
+              {
+                var stroke = [];
+                $.each(item.points, function(j,point) {
+                  stroke.push(new Point(parseInt(point[j,0]), parseInt(point[j,1])));
+                });
+                trajectory.push(stroke);
               }
-          },
-              failure: function(errMsg) {
-                  alert(errMsg);
-              }
-          });
+            });
+            console.log("True acceptance:"+ture_accepted);
+            console.log("False acceptance:"+false_accepted);
+            console.log("True Rejection:"+ true_rejection);
+          }
+          else{
+            console.log("There was error downloading gestures");
+          }
+        },
+        failure: function(errMsg) {
+          alert(errMsg);
+        }
+      });
 
     });
-    });
-    </script>
+  });
+</script>
 
-    <!-- var triangle = [[new Point(30, 7),  new Point(103, 7)],
-                                  [new Point(103, 7), new Point(66, 87)],
-                                  [new Point(66, 87), new Point(30, 7)]
-                                 ];
-                 
-                  recognizer.AddGesture( "triangle",useBoundedRotationInvariance, triangle);
-                 
-                  var myHandDrawingOfTriangle = [ [new Point(20, 7),   new Point(54, 8),  new Point(100, 10)],
-                                                  [new Point(103, 7),  new Point(82, 47), new Point(66, 87)],
-                                                  [new Point(66, 87),  new Point(45, 45), new Point(30, 7)]
-                                                 ];
-                  result = recognizer.Recognize( myHandDrawingOfTriangle, requireSameNoOfStrokes, useProtractor); -->
+<!-- var triangle = [[new Point(30, 7),  new Point(103, 7)],
+[new Point(103, 7), new Point(66, 87)],
+[new Point(66, 87), new Point(30, 7)]
+];
+
+recognizer.AddGesture( "triangle",useBoundedRotationInvariance, triangle);
+
+var myHandDrawingOfTriangle = [ [new Point(20, 7),   new Point(54, 8),  new Point(100, 10)],
+[new Point(103, 7),  new Point(82, 47), new Point(66, 87)],
+[new Point(66, 87),  new Point(45, 45), new Point(30, 7)]
+];
+result = recognizer.Recognize( myHandDrawingOfTriangle, requireSameNoOfStrokes, useProtractor); -->

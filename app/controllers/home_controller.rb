@@ -175,7 +175,28 @@ class HomeController < ApplicationController
 	end
 
 	def get_gestures
-		gestures = Trajectory.where(:user_id => 1).order(:user_id,:gesture_id,:exec_num)
+		gestures = Trajectory.order(:user_id,:gesture_id,:exec_num)
+		# all_trajectories = Array.new
+		# gestures.each do |trajectory |
+		# 	points = Hash.new
+		# 	trajectory.points.each_with_index do | val, index |
+		# 		points[index] = val
+		# 	end
+		# 	path = Interpolate::Points.new(points)
+		# 	interpolated_points = Array.new
+		# 	(0).step(points.length, (points.length/10.0).round) do |time|
+		# 	  position = path.at(time)
+		# 	  interpolated_points.push(position)
+		# 	end
+		# 	puts interpolated_points.length
+		# 	data_source_hash = {
+		# 		:user_id => trajectory.user_id,
+		# 		:gesture_id => trajectory.gesture_id,
+		# 		:exec_num => trajectory.exec_num,
+		# 		:points => interpolated_points
+		# 	}
+		# 	all_trajectories.push(data_source_hash)
+		# end
 		render :json => {:result => gestures}
 	end
 end
