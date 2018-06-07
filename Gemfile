@@ -12,7 +12,6 @@ gem 'rails', '~> 5.1.4'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 gem 'devise'
-gem 'interpolate'
 gem 'bootstrap-sass', '~> 3.2.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
