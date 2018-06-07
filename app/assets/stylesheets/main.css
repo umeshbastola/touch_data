@@ -185,3 +185,9 @@
    white-space: nowrap;
    width: 300px;
 }
+.draggable{
+    width:30px;
+    height: 30px;
+    background: #cfe;
+    border: 1px solid #555;
+}

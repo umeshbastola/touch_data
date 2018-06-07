@@ -1,6 +1,5 @@
 <script type="text/javascript">
         $base_id = -1;
-        $num_touchDown =0;
         $.touch.triggerMouseEvents = true;
         $.touch.orientationChanged(function () {
             var width = $(window).width(),
@@ -71,13 +70,6 @@
             }
             $('#canvas').touchable({
                 touchDown: function () {
-                    $num_touchDown +=1;
-                    if($num_touchDown > 5){
-                        $('#canvas').unbind('touchmove');
-                        alert("Max number of touch down reached");
-
-                        return false;
-                    }
                     return true;
                 },
                 touchMove: handleTouch2
@@ -132,6 +124,7 @@
     <canvas id="canvas" style="background: silver"></canvas>
     <div id='path' style="overflow-y: visible;"></div>
     <input type="button" class="verify_data" value="Submit Login Data"></input>
+    <input type="button" class="clear_canvas" value="Clear"></input>
     <input type="button" class="check_me" value="Login"></input>
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" >&times;</a>
@@ -186,6 +179,7 @@
                 </div>
               </div>
               <% end %>
+              <br><br><input type="file" name="filesToUpload[]" id="filesToUpload" />
 </div>
 
 <!-- Use any element to open the sidenav -->

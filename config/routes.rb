@@ -12,4 +12,5 @@ Rails.application.routes.draw do
 	get 'delete_gesture_exec', :to => 'home#destroy_last'
 	get 'dollarn', :to => 'home#dollarn'
 	get 'all_gestures', :to => 'home#get_gestures'
+	get 'reference', :to => 'chnmm_login#reference'
 end

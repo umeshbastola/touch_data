@@ -59,7 +59,7 @@ class HomeController < ApplicationController
 			render :json => {:result => final_msg}
 			return
 		end
-		if !first
+		if (!first && params[:password_gesture]==0)
 			all_distances = Array.new
 			single_stroke.each do | stroke, data|
 				all_distances.push(shortest_distance(single_stroke[stroke][0],raw_data))
@@ -93,7 +93,7 @@ class HomeController < ApplicationController
 		# is_password: 0 = normal gesture, 1 = password gesture, 2 = check for password matching
 		i=0
 		single_stroke.each do | stroke, data|
-			if(params[:gesture_id].to_i < 3 && !first)
+			if(params[:gesture_id].to_i < 3 && !first && params[:password_gesture]==0)
 				sequence = all_distances[i].keys[0]
 			else
 				sequence = order_array.find_index { |k,_| k== stroke } 

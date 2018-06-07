@@ -1,0 +1,15 @@
+<script>
+  $( function() {
+    $( ".draggable" ).draggable();
+    $('.create_new').bind("click", function(){
+      var string = '<div class="draggable" class="ui-widget-content"></div>';
+  		  $(string).appendTo('.contains').draggable();
+    });
+     
+  } );
+  </script>
+  <div><input type="button" class="create_new" value="Create New Reference Point"></div>
+</div>
+<div class="contains" >
+  <div class="draggable" class="ui-widget-content">
+</div>

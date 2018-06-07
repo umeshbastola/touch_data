@@ -128,7 +128,6 @@ $.touch.ready(function () {
 
     $('.plot_ges').bind("click", function(){
         var gesture_id = $("#gesture_all").val();
-        if(gesture_id != 0){
         	$('.closebtn').trigger('click');
 	        var user_id = $("#users_all").val();
 	        $.ajax({
@@ -140,21 +139,24 @@ $.touch.ready(function () {
 	                alert(errMsg);
 	            }
 	        });
-    	}else{
-    		alert("Please select a gesture from dropdown!")
-    	}
     });
 
     var in_progress = false;
 	$('.data_json').bind("click", function(){    
 		var gesture_id = $("#gesture_all").val();
+        var is_password = 0;
         var strokes = $('option:selected', "#gesture_all").data('strokes');
-        if(!in_progress && gesture_id != 0 && $touch_data.length){
+        if($("#ispassword").is(":checked"))
+        {
+            is_password = 1;
+            strokes = $("#num_strokes").val();
+        }
+        if((!in_progress && gesture_id != 0 && $touch_data.length) || $("#ispassword").is(":checked")){
             in_progress = true;
 	        $.ajax({
 	            type: "POST",
 	            url: "/data_post",
-	            data: {finger_data:$touch_data,password_gesture:0,gesture_id:gesture_id,num_stroke:strokes},
+	            data: {finger_data:$touch_data,password_gesture:is_password,gesture_id:gesture_id,num_stroke:strokes},
 	            success: function(data){
 	            	alert(data.result);
                     initializeCanvas();
@@ -171,7 +173,7 @@ $.touch.ready(function () {
     });
     $('.delete_gesture').bind("click", function(){
         var gesture_id = $("#gesture_all").val();
-        if(gesture_id != 0 && confirm("Are you sure you want to delete the gesture?")){
+        if(confirm("Are you sure you want to delete the gesture?")){
             $.ajax({
                 type: "GET",
                 url: "/delete_gesture",
@@ -211,7 +213,7 @@ $.touch.ready(function () {
         var option = $('option:selected', "#gesture_all").data('count');
         var user_id = $("#users_all").val();
         $(".desc").html($("."+option).html());
-        if(gesture_id != 0){
+        // if(gesture_id != 0){
             $.ajax({
                 type: "GET",
                 url: "/get_last/"+user_id+"/"+gesture_id,
@@ -229,6 +231,12 @@ $.touch.ready(function () {
                     alert(errMsg);
                 }
             });
-        }
+        // }
     })
+    $('#filesToUpload').change( function(event) {
+        var tmppath = URL.createObjectURL(event.target.files[0]);
+        $('#canvas').css('background-image', 'url(' + tmppath + ')');
+        $('#canvas').css('background-size', 'cover');
+    });
+
 });

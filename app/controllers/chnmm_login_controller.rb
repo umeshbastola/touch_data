@@ -99,4 +99,8 @@ class ChnmmLoginController < ApplicationController
 		end
 		render :json => {:result => result, :messege => messege}
 	end
+
+	def reference 
+
+	end
 end
